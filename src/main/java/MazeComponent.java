@@ -46,6 +46,31 @@ class MazeComponent extends JComponent {
     }
 
     private void createMaze (int cells, Graphics g) {
+        initDisjointSets(cells*cells);  //unionfind-struktur skapas var varje cell är sin egen mängd
+        // (om två celler har samma mängd-> det finns en vägg mellan dem
+        random = new Random(); //slumpar fram val så det är en unik labyrint varje gång
+
+        while(!allConncted()){ //huvudloop som kör så länge det finns flera celler som ännu inte är ihopkopplade
+            int x = random.nextInt(cells);
+            int y= random.nextInt(cells);
+            int wall= random.nextInt(4);
+        //x och y slumpmässig cell i rutnätet, wall=vilken vägg ska tas bort, 0=vänst, 1=upp, 2=hög, 3=ner)
+
+            int cell= y* cells+x;
+            int cell2 =-1;
+
+            switch(wall){
+                case 0: if (x>0) cell2=y* cells+x-1; break;
+                case 1: if (y>0) cell2= (y-1)* cells+x; break;
+                case 2: if (x<cells-1) cell2=y* cells+x+1; break;
+                case 3: if (y<cells-1) cell2= (y+1)* cells+x; break;
+            }
+            if (cell2 ==-1) continue;
+            if (find(cell1) !=find(cell2)){
+                union(cell1, cell2);
+                drawWall(x, y, wall, g);
+            }
+        }
 
         // This is what you write
 

@@ -45,6 +45,17 @@ class MazeComponent extends JComponent {
     }
 
     private void createMaze (int cells, Graphics g) {
+        initDisjointSets(cells*cells);  //unionfind-struktur skapas var varje cell är sin egen mängd
+        // (om två celler har samma mängd-> det finns en vägg mellan dem
+        random = new Random(); //slumpar fram val så det är en unik labyrint varje gång
+
+        while(!allConncted()){ //huvudloop som kör så länge
+            int x = random.nextInt(cells);
+            int y= random.nextInt(cells);
+            int wall= random.nextInt(4);
+
+
+        }
 
         // This is what you write
 

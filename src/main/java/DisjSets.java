@@ -1,10 +1,10 @@
 public class DisjSets {
 
-    public DisjSet( int numElements )
-    public void union( int rot1, int rot2 )
-    public int find( int x )
+    public DisjSet( int numElements );
+    public void union( int rot1, int rot2 );
+    public int find( int x );
     private int [] s;
-}
+
 
 /* Initiera en disjunkt mängd */
 public DisjSets(int numElements)
@@ -12,7 +12,7 @@ public DisjSets(int numElements)
     for ( int i = 0; i < s.length; i++)
         s[i] = -1;
 }
-}
+
 
 
 /* Antar att rot1 och rot2 är rötter */
@@ -33,4 +33,6 @@ public int find(int x)
     if( s[x] < 0 ) /* x är en rot, returnera den */
         return x;
     else return find( s[x] ); /* annars gå ett steg uppåt */
+}
+
 }

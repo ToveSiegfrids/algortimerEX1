@@ -56,21 +56,21 @@ class MazeComponent extends JComponent {
             int wall= random.nextInt(4);
         //x och y slumpmässig cell i rutnätet, wall=vilken vägg ska tas bort, 0=vänst, 1=upp, 2=hög, 3=ner)
 
-            int cell1 = y* cells+x;
-            int cell2 =-1;
-
-            switch(wall){
-                case 0: if (x>0) cell2=y* cells+x-1; break;
-                case 1: if (y>0) cell2= (y-1)* cells+x; break;
-                case 2: if (x<cells-1) cell2=y* cells+x+1; break;
-                case 3: if (y<cells-1) cell2= (y+1)* cells+x; break;
-            }
-            if (cell2 ==-1) continue;
-            if (DisjSets.find(cell1) != DisjSets.find(cell2)){
-                DisjSets.union(cell1, cell2);
-                drawWall(x, y, wall, g);
-            }
-        }
+//            int cell1 = y* cells+x;
+//            int cell2 =-1;   //union find är i 1d så konverteras rutnätet till ett enda tal
+//
+//            switch(wall){
+//                case 0: if (x>0) cell2=y* cells+x-1; break;
+//                case 1: if (y>0) cell2= (y-1)* cells+x; break;
+//                case 2: if (x<cells-1) cell2=y* cells+x+1; break;
+//                case 3: if (y<cells-1) cell2= (y+1)* cells+x; break;
+//            }
+//            if (cell2 ==-1) continue;
+//            if (DisjSets.find(cell1) != DisjSets.find(cell2)){
+//                DisjSets.union(cell1, cell2);
+//                drawWall(x, y, wall, g);
+//            }
+//        }
 
         // This is what you write
 

@@ -45,13 +45,6 @@ class MazeComponent extends JComponent {
     }
 
     private void createMaze (int cells, Graphics g) {
-        initDisjointSets (cells*cells);
-        while (!allConncted()){
-            int x = random.nextInt(cells);
-            int y= random.nextInt(cells);
-            int wall= random.nextInt(4);
-
-        }
 
         // This is what you write
 

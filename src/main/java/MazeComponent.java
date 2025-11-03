@@ -46,10 +46,7 @@ class MazeComponent extends JComponent {
     }
 
     private void createMaze (int cells, Graphics g) {
-        int total = cells * cells;
-        DisjSets uf = new DisjSets(total);
-
-        //DisjSets(total);  //unionfind-struktur skapas var varje cell är sin egen mängd
+        initDisjointSets(cells*cells);  //unionfind-struktur skapas var varje cell är sin egen mängd
         // (om två celler har samma mängd-> det finns en vägg mellan dem
         random = new Random(); //slumpar fram val så det är en unik labyrint varje gång
 
@@ -59,34 +56,24 @@ class MazeComponent extends JComponent {
             int wall= random.nextInt(4);
         //x och y slumpmässig cell i rutnätet, wall=vilken vägg ska tas bort, 0=vänst, 1=upp, 2=hög, 3=ner)
 
-            int cell1 = y* cells+x;
-            int cell2 =-1;
+//            int cell1 = y* cells+x;
+//            int cell2 =-1;   //union find är i 1d så konverteras rutnätet till ett enda tal
+//
+//            switch(wall){
+//                case 0: if (x>0) cell2=y* cells+x-1; break;
+//                case 1: if (y>0) cell2= (y-1)* cells+x; break;
+//                case 2: if (x<cells-1) cell2=y* cells+x+1; break;
+//                case 3: if (y<cells-1) cell2= (y+1)* cells+x; break;
+//            }
+//            if (cell2 ==-1) continue;
+//            if (DisjSets.find(cell1) != DisjSets.find(cell2)){
+//                DisjSets.union(cell1, cell2);
+//                drawWall(x, y, wall, g);
+//            }
+//        }
 
-            int nx = x, ny = y; // granncell
+        // This is what you write
 
-            switch (wall) {
-                case 0: nx = x - 1; break; // vänster
-                case 1: ny = y - 1; break; // upp
-                case 2: nx = x + 1; break; // höger
-                case 3: ny = y + 1; break; // ner
-            }
-
-            // hoppa över om väggen är på ytterkant
-            if (nx < 0 || ny < 0 || nx >= cells || ny >= cells) continue;
-
-            //int cell1 = y * cells + x;
-            //int cell2 = ny * cells + nx;
-
-            if (!uf.connected(cell1, cell2)) {
-                uf.union(cell1, cell2);
-                // Ta bort väggen (rita över i bakgrundsfärg)
-                g.setColor(Color.yellow);
-                drawWall(x, y, wall, g);
-                // Ta även bort motsatta väggen i granncellen
-                int opposite = (wall + 2) % 4;
-                drawWall(nx, ny, opposite, g);
-            }
-        }
     }
 
 

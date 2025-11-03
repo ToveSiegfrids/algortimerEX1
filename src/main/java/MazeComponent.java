@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
-import DisjSets.java;
+
 
 class MazeComponent extends JComponent {
     protected int width;
@@ -50,13 +50,13 @@ class MazeComponent extends JComponent {
         // (om två celler har samma mängd-> det finns en vägg mellan dem
         random = new Random(); //slumpar fram val så det är en unik labyrint varje gång
 
-        while(!allConncted()){ //huvudloop som kör så länge det finns flera celler som ännu inte är ihopkopplade
+        while(!DisjSets.allDone()){ //huvudloop som kör så länge det finns flera celler som ännu inte är ihopkopplade
             int x = random.nextInt(cells);
             int y= random.nextInt(cells);
             int wall= random.nextInt(4);
         //x och y slumpmässig cell i rutnätet, wall=vilken vägg ska tas bort, 0=vänst, 1=upp, 2=hög, 3=ner)
 
-            int cell= y* cells+x;
+            int cell1 = y* cells+x;
             int cell2 =-1;
 
             switch(wall){
@@ -66,8 +66,8 @@ class MazeComponent extends JComponent {
                 case 3: if (y<cells-1) cell2= (y+1)* cells+x; break;
             }
             if (cell2 ==-1) continue;
-            if (find(cell1) !=find(cell2)){
-                union(cell1, cell2);
+            if (DisjSets.find(cell1) != DisjSets.find(cell2)){
+                DisjSets.union(cell1, cell2);
                 drawWall(x, y, wall, g);
             }
         }

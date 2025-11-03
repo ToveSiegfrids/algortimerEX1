@@ -11,15 +11,14 @@ public DisjSets(int numElements) {
         s[i] = -1;
 }
 
-public int find(int x)
-{
+public static int find(int x) {
     if( s[x] < 0 ) /* x är en rot, returnera den */
         return x;
     else return find( s[x] ); /* annars gå ett steg uppåt */
 }
 
 /* Antar att rot1 och rot2 är rötter */
-public void union( int rot1, int rot2)
+public static void union(int rot1, int rot2)
 {
     if ( s[rot2] < s[rot1] ) /* rot2 är större */
     { s[rot2] += s[rot1]; /* Addera storekarna */
@@ -35,7 +34,7 @@ public void union( int rot1, int rot2)
         return find(rotA) == find(rotB);
     }
 
-    public boolean allDone() {
+    public static boolean allDone() {
         // allt är klart om det finns exakt en rot
         int roots = 0;
         for (int i = 0; i < s.length; i++)

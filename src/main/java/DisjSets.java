@@ -1,13 +1,10 @@
-import java.util.ArrayList;
-
 public class DisjSets {
-
-
-/* Initiera en disjunkt mängd */
-
 
     private int [] s;
 
+    /**
+     * Initiera en disjunkt mängd
+     * */
 public DisjSets(int numElements) {
     s = new int[numElements];
     for (int i = 0; i < s.length; i++)
@@ -38,7 +35,7 @@ public void union( int rot1, int rot2)
         return find(rotA) == find(rotB);
     }
 
-    public boolean allConnected() {
+    public boolean allDone() {
         // allt är klart om det finns exakt en rot
         int roots = 0;
         for (int i = 0; i < s.length; i++)

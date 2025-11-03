@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
+import DisjSets.java;
 
 class MazeComponent extends JComponent {
     protected int width;

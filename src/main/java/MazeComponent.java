@@ -46,7 +46,10 @@ class MazeComponent extends JComponent {
     }
 
     private void createMaze (int cells, Graphics g) {
-        initDisjointSets(cells*cells);  //unionfind-struktur skapas var varje cell är sin egen mängd
+        int total = cells * cells;
+        DisjSets uf = new DisjSets(total);
+
+        //DisjSets(total);  //unionfind-struktur skapas var varje cell är sin egen mängd
         // (om två celler har samma mängd-> det finns en vägg mellan dem
         random = new Random(); //slumpar fram val så det är en unik labyrint varje gång
 
@@ -59,21 +62,31 @@ class MazeComponent extends JComponent {
             int cell1 = y* cells+x;
             int cell2 =-1;
 
-            switch(wall){
-                case 0: if (x>0) cell2=y* cells+x-1; break;
-                case 1: if (y>0) cell2= (y-1)* cells+x; break;
-                case 2: if (x<cells-1) cell2=y* cells+x+1; break;
-                case 3: if (y<cells-1) cell2= (y+1)* cells+x; break;
+            int nx = x, ny = y; // granncell
+
+            switch (wall) {
+                case 0: nx = x - 1; break; // vänster
+                case 1: ny = y - 1; break; // upp
+                case 2: nx = x + 1; break; // höger
+                case 3: ny = y + 1; break; // ner
             }
-            if (cell2 ==-1) continue;
-            if (DisjSets.find(cell1) != DisjSets.find(cell2)){
-                DisjSets.union(cell1, cell2);
+
+            // hoppa över om väggen är på ytterkant
+            if (nx < 0 || ny < 0 || nx >= cells || ny >= cells) continue;
+
+            //int cell1 = y * cells + x;
+            //int cell2 = ny * cells + nx;
+
+            if (!uf.connected(cell1, cell2)) {
+                uf.union(cell1, cell2);
+                // Ta bort väggen (rita över i bakgrundsfärg)
+                g.setColor(Color.yellow);
                 drawWall(x, y, wall, g);
+                // Ta även bort motsatta väggen i granncellen
+                int opposite = (wall + 2) % 4;
+                drawWall(nx, ny, opposite, g);
             }
         }
-
-        // This is what you write
-
     }
 
 

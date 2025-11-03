@@ -1,6 +1,6 @@
 public class DisjSets {
 
-    private int [] s;
+    private static int [] s;
 
     /**
      * Initiera en disjunkt mängd
@@ -10,6 +10,7 @@ public DisjSets(int numElements) {
     for (int i = 0; i < s.length; i++)
         s[i] = -1;
 }
+
 
 public static int find(int x) {
     if( s[x] < 0 ) /* x är en rot, returnera den */

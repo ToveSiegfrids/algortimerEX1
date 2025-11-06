@@ -1,26 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
-
-
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-
 import javax.swing.UIManager;
 import javax.swing.JOptionPane;
-import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-
-import java.util.Random;
 
 
     public class Ex1 {
         private static final int WIDTH = 800;  // Size of the window in pixels
         private static final int HEIGHT = 800;
 
-        static int cells=20;    // The size of the maze is cells*cells (default is 20*20)
+        static int cells = 10;    // The size of the maze is cells*cells (default is 20*20)
 
         public static void main(String[] args) {
 

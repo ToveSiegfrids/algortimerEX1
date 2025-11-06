@@ -2,7 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-
+/**
+ * class that creats the maze and contains logic for it
+ * additional actions (void methods for union and find) is handled over to DisSets class
+ */
 class MazeComponent extends JComponent {
     protected int width;
     protected int height;
@@ -20,9 +23,14 @@ class MazeComponent extends JComponent {
         width =  c*cellWidth;     // Calculate exact dimensions of the component
         height = c*cellHeight;
         setPreferredSize(new Dimension(width+1,height+1));  // Add 1 pixel for the border
+        setBackground(Color.yellow);
+        setOpaque(true);
+        System.out.println("MazeComponent size = " + width + "x" + height);
+
     }
 
     public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         g.setColor(Color.yellow);                    // Yellow background
         g.fillRect(0, 0, width, height);
 
@@ -45,54 +53,66 @@ class MazeComponent extends JComponent {
         createMaze(cells, g);
     }
 
+    /** creates maze and handles different situations with walls (exist or not)
+     * @param cells
+     * @param g
+     */
+
     private void createMaze(int cells, Graphics g) {
-        int total = cells * cells;
+        int total = cells * cells; //total amount of cells
         DisjSets uf = new DisjSets(total);
         Random random = new Random();
 
-        while (!uf.allDone()) {
-            int randomCell = random.nextInt(total); //en random koordinat i x-led
-            //int y = random.nextInt(total); //EN RANDOM koordinat I Y-LED
-            int wall = random.nextInt(4); // 0=left, 1=up, 2=right, 3=down namn på random vägg
-            int neighborCell = -1;
+        while (!uf.allDone()) { //while we are having more than one set for all cells
+            int randomCell = random.nextInt(total); //random number that gives a random cell in the maze
+            int wall = random.nextInt(4); //random wall -  0=left, 1=up, 2=right, 3=down
+            int neighborCell = -1; // the cell on the other side of wall
 
-           // int nx = x; // granncell nkoordinater till xy cellen
-            // int ny = y; // granncell nkoordinater till xy cellen
             switch (wall) {
-                case 0: // vänster
-                    if (randomCell % cells != 0) neighborCell = randomCell - 1;
+                case 0: //we handle left wall
+                    if (randomCell % cells != 0) //checks that we are not in col = 0
+                        neighborCell = randomCell - 1; //we have a neighbour which has number cell-1
                     break;
-                case 1: // upp
-                    if (randomCell >= cells) neighborCell = randomCell - cells;
+                case 1: //handle up wall
+                    if (randomCell >= cells) //checks that we are not in row = 0
+                        neighborCell = randomCell - cells; //we have a neighbour which has number cell- cells (lenght of one row), iow one row over)
                     break;
-                case 2: // höger
-                    if ((randomCell + 1) % cells != 0) neighborCell = randomCell + 1;
+                case 2: //handle right wall
+                    if ((randomCell + 1) % cells != 0) //checks that we are not in the rightmost col
+                        neighborCell = randomCell + 1; //we have a neighbor to the right
                     break;
-                case 3: // ner
-                    if (randomCell < (cells - 1) * cells) neighborCell = randomCell + cells;
+                case 3: //handle down wall
+                    if (randomCell < (cells - 1) * cells) //checks that we are not in the bottom row
+                        neighborCell = randomCell + cells; //we have a neighbor under us
                     break;
             }
 
-            // om ingen giltig granne → hoppa över
+            // if the cell dont have any neighbor we skip
             if (neighborCell == -1) continue;
 
-            // om cellerna inte är sammankopplade
+            //checks if the cells arent connected (in the same set)
             if (!uf.connected(randomCell, neighborCell)) {
-                uf.union(randomCell, neighborCell);
+                uf.union(randomCell, neighborCell); //we smash them together (union)
 
-                // ta bort väggen grafiskt
+                //when we know the neighbor state we can delete the wall to the neighbor:
+
+                //coordinates for cell
                 int x = randomCell % cells;
                 int y = randomCell / cells;
+
+                //coordinates for the neihgbor
                 int nx = neighborCell % cells;
                 int ny = neighborCell / cells;
 
+                //"deletes" wall (changes color to background color)
                 g.setColor(Color.yellow);
-                drawWall(x, y, wall, g);
-                int opposite = (wall + 2) % 4;
-                drawWall(nx, ny, opposite, g);
-                drawWall(nx, ny, opposite, g);
+                drawWall(x, y, wall, g); //draw wall in method drawwall() in background color
+                int oppositeWall = (wall + 2) % 4; //opposite wall (wall needs to be deleted from both cell and neighbor)
+                drawWall(nx, ny, oppositeWall, g); //paint neighbors wall also in background color
             }
         }
+        System.out.println("vi har endast en mängd wohoo");
+
     }
 
 

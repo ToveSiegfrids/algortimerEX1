@@ -15,21 +15,22 @@ public DisjSets(int numElements) {
 public static int find(int x) {
     if( s[x] < 0 ) /* x är en rot, returnera den */
         return x;
-    else return find( s[x] ); /* annars gå ett steg uppåt */
+    else return  s[x] = find( s[x] ); /* annars gå ett steg uppåt */
 }
 
 /* Antar att rot1 och rot2 är rötter */
 public static void union(int rot1, int rot2)
 {
-    if ( s[rot2] < s[rot1] ) /* rot2 är större */
-    { s[rot2] += s[rot1]; /* Addera storekarna */
-        s[rot1] = rot2; /* rot2 blir ny rot */
-    }
-    else /* rot1 är det större trädet */
-    { s[rot1] += s[rot2];
-        s[rot2] = rot1; /* rot1 blir ny rot */
-    }
-}
+    if (rot1 == rot2) return;
+
+    if (s[rot2] < s[rot1]) { // root2 är "större" (mer negativt)
+        s[rot1] = rot2;
+
+    } else {
+        if (s[rot1] == s[rot2])
+            s[rot1]--; // öka storlek på root1:s träd
+        s[rot2] = rot1;
+    }}
 
     public boolean connected(int rotA, int rotB) {
         return find(rotA) == find(rotB);

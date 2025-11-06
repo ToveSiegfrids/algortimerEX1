@@ -48,34 +48,48 @@ class MazeComponent extends JComponent {
     private void createMaze(int cells, Graphics g) {
         int total = cells * cells;
         DisjSets uf = new DisjSets(total);
-        random = new Random();
+        Random random = new Random();
 
         while (!uf.allDone()) {
-            int x = random.nextInt(cells);
-            int y = random.nextInt(cells);
-            int wall = random.nextInt(4); // 0=left, 1=up, 2=right, 3=down
+            int randomCell = random.nextInt(total); //en random koordinat i x-led
+            //int y = random.nextInt(total); //EN RANDOM koordinat I Y-LED
+            int wall = random.nextInt(4); // 0=left, 1=up, 2=right, 3=down namn på random vägg
+            int neighborCell = -1;
 
-            int nx = x, ny = y; // granncell
+           // int nx = x; // granncell nkoordinater till xy cellen
+            // int ny = y; // granncell nkoordinater till xy cellen
             switch (wall) {
-                case 0: nx = x - 1; break; // vänster
-                case 1: ny = y - 1; break; // upp
-                case 2: nx = x + 1; break; // höger
-                case 3: ny = y + 1; break; // ner
+                case 0: // vänster
+                    if (randomCell % cells != 0) neighborCell = randomCell - 1;
+                    break;
+                case 1: // upp
+                    if (randomCell >= cells) neighborCell = randomCell - cells;
+                    break;
+                case 2: // höger
+                    if ((randomCell + 1) % cells != 0) neighborCell = randomCell + 1;
+                    break;
+                case 3: // ner
+                    if (randomCell < (cells - 1) * cells) neighborCell = randomCell + cells;
+                    break;
             }
 
-            // hoppa över om väggen är på ytterkant
-            if (nx < 0 || ny < 0 || nx >= cells || ny >= cells) continue;
+            // om ingen giltig granne → hoppa över
+            if (neighborCell == -1) continue;
 
-            int cell1 = y * cells + x;
-            int cell2 = ny * cells + nx;
+            // om cellerna inte är sammankopplade
+            if (!uf.connected(randomCell, neighborCell)) {
+                uf.union(randomCell, neighborCell);
 
-            if (!uf.connected(cell1, cell2)) {
-                uf.union(cell1, cell2);
-                // Ta bort väggen (rita över i bakgrundsfärg)
+                // ta bort väggen grafiskt
+                int x = randomCell % cells;
+                int y = randomCell / cells;
+                int nx = neighborCell % cells;
+                int ny = neighborCell / cells;
+
                 g.setColor(Color.yellow);
                 drawWall(x, y, wall, g);
-                // Ta även bort motsatta väggen i granncellen
                 int opposite = (wall + 2) % 4;
+                drawWall(nx, ny, opposite, g);
                 drawWall(nx, ny, opposite, g);
             }
         }
